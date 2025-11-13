@@ -344,7 +344,7 @@ make_sound(Dog())
 make_sound(Cat())
 ```
 
-## 7. Method Overloading and Method Overriding
+## 6. Method Overloading and Method Overriding
 
 **Method Overloading**
 Method overloading is defining multiple methods with the same name but different parameters (not natively in Python).
@@ -379,7 +379,7 @@ c = Child()
 c.show()
 ```
 
-## 8. super()
+## 7. super()
 super() is used to call parent class methods or constructor from a child class.
 
 - Example:
