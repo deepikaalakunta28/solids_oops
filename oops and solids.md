@@ -323,9 +323,8 @@ c.showB()
 c.showC()
 ```
 
-```
 
-## 5. Polymorphism
+** 5.Polymorphism **
 Polymorphism allows the same function name to behave differently based on the object calling it.
 
 - Example:
@@ -403,7 +402,7 @@ b = B()
 Real Python — Object-Oriented Programming in Python
 - https://realpython.com/python3-object-oriented-programming
 - https://www.geeksforgeeks.org/python/python-oops-concepts/
--freeCodeCamp — https://www.freecodecamp.org/news/solid-principles-explained-in-plain-english
+- https://www.freecodecamp.org/news/solid-principles-explained-in-plain-english
 
 
 
