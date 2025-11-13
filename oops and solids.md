@@ -1,4 +1,118 @@
-# OOPS AND SOLIDS CHEATSHEET
+## SOLIDS
+**SOLID:**
+SOLID is a set of five object-oriented design principles that help you write clean, maintainable, and easy-to-extend code.
+
+- SOLID Stand for:
+
+**S** – Single Responsibility Principle
+**O** – Open/Closed Principle
+**L** – Liskov Substitution Principle
+**I** – Interface Segregation Principle
+**D** – Dependency Inversion Principle
+
+**1. Single Responsibility Principle (SRP):**
+A class should do only one job and have only one reason to change.
+
+- Bad Code(one class doing too many things)
+```python
+class Student:
+    def save_to_db(self):
+        pass
+    def print_report(self):
+        pass
+
+- Good Code (Split responsibilities):
+class StudentDB:
+    def save(self):
+        pass
+
+class StudentReport:
+    def print(self):
+        pass
+```
+
+**2. Open/Closed Principle (OCP):**
+Classes should be open for extension but closed for modification.
+
+- Example:
+Instead of changing existing code, we extend it.
+```python
+class Discount:
+    def get_discount(self, amount):
+        return amount * 0.10
+
+class PremiumDiscount(Discount):
+    def get_discount(self, amount):
+        return amount * 0.20    # extended behavior
+```
+
+**3. Liskov Substitution Principle (LSP):**
+A child class must be usable in place of its parent class without breaking anything.
+Objects of a superclass should be replaceable with objects of its subclass without breaking the application.
+
+- Example:
+```python
+class Bird:
+    def fly(self):
+        print("Bird flying")
+
+class Sparrow(Bird):  # valid substitution
+    pass
+
+def make_it_fly(bird):
+    bird.fly()
+
+make_it_fly(Sparrow())   # Works perfectly
+```
+- A Penguin class would violate LSP because penguins cannot fly.
+
+**4. Interface Segregation Principle (ISP):**
+Don’t force a class to implement methods it does not need.
+
+- Example:
+- Bad Code:
+```python
+class Worker:
+    def code(self): pass
+    def cook(self): pass
+
+- Good Code (Split into small Interfaces):
+class Coder:
+    def code(self): pass
+
+class Chef:
+    def cook(self): pass
+```
+
+**5. Dependency Inversion Principle (DIP):**
+High-level modules should not depend on low-level modules. Both should depend on abstractions.
+Abstractions should not depend on details. Details should depend on abstractions.
+- Example:
+- Bad code:
+```python
+class MySQL:
+    def connect(self):
+        pass
+
+class App:
+    def __init__(self):
+        self.db = MySQL()
+```
+- Good Code:
+```python
+class Database:
+    def connect(self):
+        pass
+
+class MySQL(Database):
+    def connect(self):
+        pass
+
+class App:
+    def __init__(self, db: Database):
+        self.db = db
+```
+
 
 ## OOPS
 1. Class & Object
@@ -6,9 +120,8 @@
 3. Abstraction
 4. Inheritance
 5. Polymorphism
-6. Constructor
-7. Method Overloading & Overriding
-8. Super()
+6. Method Overloading & Overriding
+7. Super()
 
 ## 1. Class & Object
 
@@ -33,7 +146,14 @@ s1 = Student("Jahnavi", 101)
 s1.show()
 ```
 
-## 2. Encapsulation
+## 2. Encapsulation:
+Encapsulation means hiding the internal details of an object and only exposing what is necessary.
+### Why Encapsulation?
+To protect data from unintended access or modification.
+
+To control how data is accessed or updated.
+
+To make code modular, secure, and easier to maintain.
 Encapsulation is the process of bundling data and methods together while restricting direct access using private variables.
 
 - Example:
@@ -55,33 +175,44 @@ print(b.get_balance())
 
 ## 3. Abstraction
 Abstraction hides unnecessary implementation details and shows only the essential features.
-
+### Why Abstraction 
+Abstraction is used to simplify complex systems by hiding unnecessary implementation details and showing only the essential features of an object.
 - Example:
 ```python
 from abc import ABC, abstractmethod
 
-class Car(ABC):
+class Payment(ABC):
     @abstractmethod
-    def start(self):
+    def pay(self, amount):
         pass
 
-class Tesla(Car):
-    def start(self):
-        print("Tesla starts silently")
+class CreditCardPayment(Payment):
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using Credit Card.")
 
-t = Tesla()
-t.start()
+class PayPalPayment(Payment):
+    def pay(self, amount):
+        print(f"Paid ₹{amount} using PayPal.")
+
+# Using abstraction
+def complete_payment(payment_method, amount):
+    payment_method.pay(amount)
+
+p1 = CreditCardPayment()
+p2 = PayPalPayment()
+
+complete_payment(p1, 500)
+complete_payment(p2, 1000)
+
 ```
 
 ## 4. Inheritance
 - Inheritance is an OOP concept where one class (child/subclass) acquires the properties and behaviors of another class (parent/superclass).
 
- -  There are five types of Inheritance.
  1. Single Inheritance
  2. Multiple Inheritance
  3. Hierarchical Inheritance
  4. Multilevel Inheritance
- 5. Hybrid Inheritance
 
 **1. Single Inheritance:**
 A child class inherits from one parent class.
@@ -167,30 +298,6 @@ c.showB()
 c.showC()
 ```
 
-**5. Hybrid Inheritance**
-A combination of two or more types of inheritance.
-
-- Example:
-```python
-class A:
-    def showA(self):
-        print("A")
-
-class B(A):
-    def showB(self):
-        print("B")
-
-class C:
-    def showC(self):
-        print("C")
-
-class D(B, C):   # hybrid (B inherits A, D inherits B + C)
-    pass
-
-d = D()
-d.showA()
-d.showB()
-d.showC()
 ```
 
 ## 5. Polymorphism
@@ -211,17 +318,6 @@ def make_sound(animal):
 
 make_sound(Dog())
 make_sound(Cat())
-```
-
-## 6. Constructor
-A constructor (__init__) is a special method that automatically initializes object variables when the object is created.
-
-```python
-class Demo:
-    def __init__(self):
-        print("Object created")
-
-d = Demo()
 ```
 
 ## 7. Method Overloading and Method Overriding
@@ -276,136 +372,13 @@ class B(A):
 b = B()
 ```
 
-# SOLIDS
 
-**SOLID:**
-SOLID is a set of five object-oriented design principles that help you write clean, maintainable, and easy-to-extend code.
-These five principles make software:
-1. easier to understand
-2. easier to change
-3. less buggy
-4. more reusable
-
-- SOLID Stand for:
-
-**S** – Single Responsibility Principle
-**O** – Open/Closed Principle
-**L** – Liskov Substitution Principle
-**I** – Interface Segregation Principle
-**D** – Dependency Inversion Principle
-
-**1. Single Responsibility Principle (SRP):**
-A class should do only one job and have only one reason to change.
-
-- Bad Code(one class doing too many things)
-```python
-class Student:
-    def save_to_db(self):
-        pass
-    def print_report(self):
-        pass
-
-- Good Code (Split responsibilities):
-class StudentDB:
-    def save(self):
-        pass
-
-class StudentReport:
-    def print(self):
-        pass
-```
-
-**2. Open/Closed Principle (OCP):**
-Classes should be open for extension but closed for modification.
-
-- Example:
-Instead of changing existing code, we extend it.
-```python
-class Discount:
-    def get_discount(self, amount):
-        return amount * 0.10
-
-class PremiumDiscount(Discount):
-    def get_discount(self, amount):
-        return amount * 0.20    # extended behavior
-```
-
-**3. Liskov Substitution Principle (LSP):**
-A child class must be usable in place of its parent class without breaking anything.
-
-- Example:
-```python
-class Bird:
-    def fly(self):
-        print("Bird flying")
-
-class Sparrow(Bird):  # valid substitution
-    pass
-
-def make_it_fly(bird):
-    bird.fly()
-
-make_it_fly(Sparrow())   # Works perfectly
-```
-- A Penguin class would violate LSP because penguins cannot fly.
-
-**4. Interface Segregation Principle (ISP):**
-Don’t force a class to implement methods it does not need.
-
-- Example:
-- Bad Code:
-```python
-class Worker:
-    def code(self): pass
-    def cook(self): pass
-
-- Good Code (Split into small Interfaces):
-class Coder:
-    def code(self): pass
-
-class Chef:
-    def cook(self): pass
-```
-
-**5. Dependency Inversion Principle (DIP):**
-Depend on abstractions, not concrete classes.
-- Example:
-- Bad code:
-```python
-class MySQL:
-    def connect(self):
-        pass
-
-class App:
-    def __init__(self):
-        self.db = MySQL()
-```
-- Good Code:
-```python
-class Database:
-    def connect(self):
-        pass
-
-class MySQL(Database):
-    def connect(self):
-        pass
-
-class App:
-    def __init__(self, db: Database):
-        self.db = db
-```
-
-**Simple SOLID Summary**
-Principle	     Meaning
-  S	       One class = one job
-  O	       Extend classes without modifying old code
-  L	       Child classes must replace parents safely
-  I	       Don't force useless methods on a class
-  D	       Depend on interfaces, not concrete classes
 
 **References**
+Real Python — Object-Oriented Programming in Python
+- https://realpython.com/python3-object-oriented-programming
 - https://www.geeksforgeeks.org/python/python-oops-concepts/
-- https://www.youtube.com/playlist?list=PL6n9fhu94yhXjG1w2blMXUzyDrZ_eyOme
+-freeCodeCamp — https://www.freecodecamp.org/news/solid-principles-explained-in-plain-english
 
 
 
