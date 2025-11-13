@@ -13,37 +13,53 @@ SOLID is a set of five object-oriented design principles that help you write cle
 **1. Single Responsibility Principle (SRP):**
 A class should do only one job and have only one reason to change.
 
-- Bad Code(one class doing too many things)
 ```python
-class Student:
+#  Bad Example 
+class Invoice:
+    def calculate_total(self):
+        pass
+    def print_invoice(self):
+        pass
     def save_to_db(self):
         pass
-    def print_report(self):
+
+# Good Example (follows SRP)
+class Invoice:
+    def calculate_total(self):
         pass
 
-- Good Code (Split responsibilities):
-class StudentDB:
-    def save(self):
+class InvoicePrinter:
+    def print_invoice(self, invoice):
         pass
 
-class StudentReport:
-    def print(self):
+class InvoiceRepository:
+    def save_to_db(self, invoice):
         pass
+
 ```
 
 **2. Open/Closed Principle (OCP):**
 Classes should be open for extension but closed for modification.
 
 - Example:
-Instead of changing existing code, we extend it.
 ```python
+#  Bad Example
 class Discount:
-    def get_discount(self, amount):
-        return amount * 0.10
+    def get_discount(self, customer_type):
+        if customer_type == "regular":
+            return 5
+        elif customer_type == "vip":
+            return 10
 
-class PremiumDiscount(Discount):
-    def get_discount(self, amount):
-        return amount * 0.20    # extended behavior
+#  Good Example
+class Discount:
+    def get_discount(self):
+        return 5
+
+class VIPDiscount(Discount):
+    def get_discount(self):
+        return 10
+
 ```
 
 **3. Liskov Substitution Principle (LSP):**
@@ -52,17 +68,26 @@ Objects of a superclass should be replaceable with objects of its subclass witho
 
 - Example:
 ```python
+# Good Example
 class Bird:
-    def fly(self):
-        print("Bird flying")
+    def make_sound(self):
+        print("Chirp!")
 
-class Sparrow(Bird):  # valid substitution
+class FlyingBird(Bird):
+    def fly(self):
+        print("I can fly!")
+
+class Sparrow(FlyingBird):
     pass
 
-def make_it_fly(bird):
-    bird.fly()
+class Ostrich(Bird):
+    pass
 
-make_it_fly(Sparrow())   # Works perfectly
+# Works fine — all are Birds
+birds = [Sparrow(), Ostrich()]
+for b in birds:
+    b.make_sound()
+
 ```
 - A Penguin class would violate LSP because penguins cannot fly.
 
